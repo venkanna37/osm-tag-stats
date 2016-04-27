@@ -13,6 +13,7 @@
     "fs": "0.0.2",
     "minimist": "^1.2.0",
     "path": "^0.12.7",
+    "readline": "^1.3.0",
     "tile-reduce": "^3.1.1",
     "turf": "^2.0.2",
     "underscore": "^1.8.3"

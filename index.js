@@ -58,8 +58,8 @@ function init() {
    if(argv.geojson) {
        geojson = (path.extname(argv.geojson) === '.geojson') ? argv.geojson : argv.geojson.concat('.geojson');
    }
+   
 //overwrite existing files?
-/*
      var overwrite = false;
      while (!overwrite && argv.geojson && fs.existsSync(argv.geojson)) {
         var rl = readline.createInterface(process.stdin, process.stdout);
@@ -74,7 +74,7 @@ function init() {
                 });
             }
         });
-    }*/
+    }
 
     count = Boolean(argv.count);
 

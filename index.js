@@ -49,7 +49,7 @@ tileReduce({
     }
 })
 .on('end', function () {
-    if (count) {
+/*    if (count) {
         var uniqueIDs = _.uniq(osmID);
         console.log('Features total: %d', uniqueIDs.length);
     }
@@ -60,4 +60,5 @@ tileReduce({
             fs.rmdirSync(tmpDir);
         });
     }
+*/
 });

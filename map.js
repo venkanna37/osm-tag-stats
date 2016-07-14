@@ -26,7 +26,7 @@ module.exports = function (data, tile, writeData, done) {
 
     if (mapOptions.tmpGeojson && result.length > 0) {
         var fc = featureCollection(result);
-        fs.appendFileSync(mapOptions.tmpGeojson, JSON.stringify(fc) + '\n');
+        writeData(JSON.stringify(fc) + '\n');
     }
     done(null, osmID);
 };

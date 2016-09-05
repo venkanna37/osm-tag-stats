@@ -51,7 +51,7 @@ tileReduce({
 })
 .on('end', function () {
     if (count) {
-        console.log('Features total: %d', osmID.size);
+        console.log('Features total: ', osmID.size, '\n\n ', osmID);
     }
     if (geojson) {
         gsm(tmpGeojson, geojson, function () {

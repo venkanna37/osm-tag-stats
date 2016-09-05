@@ -17,7 +17,11 @@ module.exports = function (data, tile, writeData, done) {
             !mapOptions.dates || (mapOptions.dates && val.properties['@timestamp'] && val.properties['@timestamp'] >= dates[0] && val.properties['@timestamp'] <= dates[1])) && (!filter || (filter && filter(val)))) {
 
             if (mapOptions.count) {
-                osmID.push(val.properties['@id']);
+                Object.keys(val.properties).forEach(function(key) {
+                    if (key.indexOf('name') !== -1) {
+                        osmID = osmID.concat(val.properties[key].split(/[\s,]/));
+                    }
+                });
             }
 
             return true;

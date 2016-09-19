@@ -14,7 +14,7 @@ module.exports = function (data, tile, writeData, done) {
     var result = layer.features.filter(function (val) {
 
         if ((!users || (users && users.indexOf(val.properties['@user']) > -1)) && (
-            !mapOptions.dates || (mapOptions.dates && val.properties['@timestamp'] && val.properties['@timestamp'] >= dates[0] && val.properties['@timestamp'] <= dates[1])) && (!filter || (filter && filter(val)))) {
+            !mapOptions.dates || (mapOptions.dates && val.properties['@timestamp'] && val.properties['@timestamp'] >= dates[0] && val.properties['@timestamp'] <= dates[1])) && (!filter || (filter && filter(val))) && val.geometry.type === 'LineString') {
 
             if (mapOptions.count) {
                 osmID.push(val.properties['@id']);

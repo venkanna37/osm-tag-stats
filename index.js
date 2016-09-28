@@ -7,7 +7,8 @@ var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
 var gsm = require('geojson-stream-merge');
 var fs = require('fs');
-
+var keys = {};
+var values = {};
 var tmpDir = 'tmp-osm-tag-stats/';
 var cleanArguments = require('./util/cleanArguments')(argv, tmpDir);
 
@@ -43,21 +44,21 @@ tileReduce({
     }
 })
 .on('reduce', function (id) {
-    if (count && id) {
-        id.forEach(function(idElement) {
-            osmID.add(idElement);
-        });
+Object.keys(id.keys).forEach(function(key) {
+    if (!(key in keys)) {
+       keys[key] = id.keys[key];
+    } else {
+       keys[key] += id.keys[key];
     }
+});
+Object.keys(id.values).forEach(function(value) {
+    if (!(value in values)) {
+       values[value] = id.values[value];
+    } else {
+       values[value] += id.values[value];
+    }
+});
 })
 .on('end', function () {
-    if (count) {
-        console.log('Features total: %d', osmID.size);
-    }
-    if (geojson) {
-        gsm(tmpGeojson, geojson, function () {
-            fs.closeSync(tmpFd);
-            fs.unlinkSync(tmpGeojson);
-            fs.rmdirSync(tmpDir);
-        });
-    }
+    console.log('keys ', keys, ' values ', values);
 });

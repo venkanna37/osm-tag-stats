@@ -19,6 +19,7 @@ var count = cleanArguments.argv.count,
     tmpGeojson = cleanArguments.tmpGeojson,
     tagFilter = cleanArguments.argv.filter,
     osmID = new Set(),
+    removeProperties = cleanArguments.argv.removeProperties,
     tmpFd;
 
 if ((!geojson && !count) || !mbtilesPath || argv.help) {
@@ -37,7 +38,8 @@ tileReduce({
         'tmpGeojson': tmpGeojson,
         'dates': dates,
         'users': users,
-        'tagFilter': tagFilter
+        'tagFilter': tagFilter,
+        'removeProperties': removeProperties
     }
 })
 .on('start', function () {
@@ -47,7 +49,7 @@ tileReduce({
 })
 .on('reduce', function (id) {
     if (count && id) {
-        id.forEach(function(idElement) {
+        id.forEach(function (idElement) {
             osmID.add(idElement);
         });
     }

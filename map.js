@@ -10,20 +10,22 @@ var featureCollection = require('turf-featurecollection');
  * @type {number}
  */
 module.exports = function (data, tile, writeData, done) {
-
+    var removeProperties = mapOptions.removeProperties;
     var filter = (mapOptions.tagFilter) ? ff(mapOptions.tagFilter) : false;
     var layer = data.osm.osm;
     var osmID = (mapOptions.count) ? [] : null;
     var dates = Boolean(mapOptions.dates) ? parseDates(mapOptions.dates) : false;
     var users = mapOptions.users;
     var result = layer.features.filter(function (val) {
-
         if ((!users || (users && users.indexOf(val.properties['@user']) > -1)) && (
             !mapOptions.dates || (mapOptions.dates && val.properties['@timestamp'] && val.properties['@timestamp'] >= dates[0] && val.properties['@timestamp'] <= dates[1])) && (!filter || (filter && filter(val)))) {
 
             if (mapOptions.count) {
                 osmID.push(val.properties['@id']);
             }
+            removeProperties.forEach(function (featureProperty) {
+                delete val[featureProperty];
+            });
 
             return true;
         }
@@ -35,7 +37,6 @@ module.exports = function (data, tile, writeData, done) {
     }
     done(null, osmID);
 };
-
 /**
  @function parseDates
  @description Convert Date to timestamp. If endDate is not present, it is set as next immediate date to startDate.

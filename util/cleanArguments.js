@@ -51,6 +51,10 @@ function cleanArguments(argv, tmpFilesDir) {
         argv.geojson = false;
     }
 
+    if (argv.removeProperties) {
+        argv.removeProperties = argv.removeProperties.split(',');
+    }
+
     //count
     argv.count = Boolean(argv.count);
 

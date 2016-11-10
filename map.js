@@ -24,7 +24,7 @@ module.exports = function (data, tile, writeData, done) {
                 osmID.push(val.properties['@id']);
             }
             removeProperties.forEach(function (featureProperty) {
-                delete val[featureProperty];
+                delete val.properties[featureProperty];
             });
 
             return true;

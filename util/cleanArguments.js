@@ -53,6 +53,7 @@ function cleanArguments(argv, tmpFilesDir) {
 
     if (argv.removeProperties) {
         argv.removeProperties = argv.removeProperties.split(',');
+        argv.removeProperties = trimStrings(argv.removeProperties);
     }
 
     //count

@@ -23,14 +23,17 @@ module.exports = function (data, tile, writeData, done) {
             if (mapOptions.count) {
                 osmID.push(val.properties['@id']);
             }
-            removeProperties.forEach(function (featureProperty) {
-                delete val.properties[featureProperty];
-            });
 
             return true;
         }
     });
-
+    if (removeProperties) {
+        for (var i = 0; i < result.length; i++) {
+            removeProperties.forEach(function (featureProperty) {
+                delete result[i].properties[featureProperty];
+            });
+        }
+    }
     if (mapOptions.tmpGeojson && result.length > 0) {
         var fc = featureCollection(result);
         fs.appendFileSync(mapOptions.tmpGeojson, JSON.stringify(fc) + '\n');

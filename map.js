@@ -36,7 +36,7 @@ module.exports = function (data, tile, writeData, done) {
     }
     if (mapOptions.tmpGeojson && result.length > 0) {
         var fc = featureCollection(result);
-        result.features.forEach(function (feature) {
+        fc.features.forEach(function (feature) {
             writeData(JSON.stringify(feature));
         });
     }

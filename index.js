@@ -22,7 +22,7 @@ var count = cleanArguments.argv.count,
     removeProperties = cleanArguments.argv.removeProperties,
     tmpFd;
 
-if ((!geojson && !count) || !mbtilesPath || argv.help) {
+if (!mbtilesPath || argv.help) {
     help();
 }
 

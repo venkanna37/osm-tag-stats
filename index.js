@@ -48,21 +48,9 @@ tileReduce({
     }
 })
 .on('reduce', function (id) {
-    if (count && id) {
-        id.forEach(function (idElement) {
-            osmID.add(idElement);
-        });
-    }
 })
 .on('end', function () {
     if (count) {
         console.log('Features total: %d', osmID.size);
-    }
-    if (geojson) {
-        gsm(tmpGeojson, geojson, function () {
-            fs.closeSync(tmpFd);
-            fs.unlinkSync(tmpGeojson);
-            fs.rmdirSync(tmpDir);
-        });
     }
 });

@@ -1,6 +1,5 @@
 'use strict';
 
-var fs = require('fs');
 var ff = require('feature-filter');
 var featureCollection = require('turf-featurecollection');
 
@@ -13,34 +12,28 @@ module.exports = function (data, tile, writeData, done) {
     var removeProperties = mapOptions.removeProperties;
     var filter = (mapOptions.tagFilter) ? ff(mapOptions.tagFilter) : false;
     var layer = data.osm.osm;
-    var osmID = (mapOptions.count) ? [] : null;
     var dates = Boolean(mapOptions.dates) ? parseDates(mapOptions.dates) : false;
     var users = mapOptions.users;
     var result = layer.features.filter(function (val) {
         if ((!users || (users && users.indexOf(val.properties['@user']) > -1)) && (
             !mapOptions.dates || (mapOptions.dates && val.properties['@timestamp'] && val.properties['@timestamp'] >= dates[0] && val.properties['@timestamp'] <= dates[1])) && (!filter || (filter && filter(val)))) {
-
-            if (mapOptions.count) {
-                osmID.push(val.properties['@id']);
-            }
-
             return true;
         }
     });
     if (removeProperties) {
-        for (var i = 0; i < result.length; i++) {
-            removeProperties.forEach(function (featureProperty) {
-                delete result[i].properties[featureProperty];
-            });
-        }
+        result.forEach(function (resultFeature) {
+            for (var i = 0; i < removeProperties.length; i++) {
+                delete resultFeature.properties[removeProperties[i]];
+            }
+        });
     }
-    if (mapOptions.tmpGeojson && result.length > 0) {
+    if (result.length > 0) {
         var fc = featureCollection(result);
         fc.features.forEach(function (feature) {
             writeData(JSON.stringify(feature));
         });
     }
-    done(null, osmID);
+    done(null, null);
 };
 /**
  @function parseDates

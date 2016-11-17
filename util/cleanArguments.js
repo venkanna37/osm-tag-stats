@@ -2,7 +2,6 @@
 
 var path = require('path');
 var fs = require('fs');
-var mapboxDataTeam = require('mapbox-data-team');
 
 /**
  @typedef Argument
@@ -29,59 +28,16 @@ var mapboxDataTeam = require('mapbox-data-team');
  @return {cleanArgument}
  */
 function cleanArguments(argv, tmpFilesDir) {
-    var mapboxUsernames = mapboxDataTeam.getUsernames();
-
-    //geojson
-    if (argv.geojson) {
-        if (!fs.existsSync(tmpFilesDir)) {
-            fs.mkdirSync(tmpFilesDir);
-        }
-
-        argv.geojson = (path.extname(argv.geojson) === '.geojson') ? argv.geojson : String(argv.geojson).concat('.geojson');
-        var tmpGeojson = tmpFilesDir + argv.geojson;
-
-        if (fs.existsSync(argv.geojson)) {
-            fs.unlinkSync(argv.geojson);
-        }
-        if (fs.existsSync(tmpGeojson)) {
-            fs.unlinkSync(tmpGeojson);
-        }
-
-    } else {
-        argv.geojson = false;
-    }
-
     if (argv.removeProperties) {
         argv.removeProperties = argv.removeProperties.split(',');
         argv.removeProperties = trimStrings(argv.removeProperties);
     }
-
-    //count
-    argv.count = Boolean(argv.count);
 
     //filter
     if (argv.filter && fs.existsSync(argv.filter)) {
         argv.filter = JSON.parse(fs.readFileSync(argv.filter));
     } else {
         argv.filter = false;
-    }
-
-    //dates
-    if (argv.dates) {
-        argv.dates = argv.dates.split(',');
-        argv.dates = trimStrings(argv.dates);
-    } else {
-        argv.dates = false;
-    }
-
-    //users
-    if (argv.users && argv.users.toLowerCase() === 'mapbox') {
-        argv.users = mapboxUsernames;
-    } else if (argv.users) {
-        argv.users = argv.users.split(',');
-        argv.users = trimStrings(argv.users);
-    } else {
-        argv.users = false;
     }
 
     //path
@@ -93,7 +49,7 @@ function cleanArguments(argv, tmpFilesDir) {
             argv.mbtiles = false;
         }
     }
-    return {'argv': argv, 'tmpGeojson': tmpGeojson};
+    return {'argv': argv};
 }
 
 /**

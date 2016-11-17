@@ -5,22 +5,16 @@ var help = require('./util/help.js');
 var tileReduce = require('tile-reduce');
 var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
-var gsm = require('geojson-stream-merge');
-var fs = require('fs');
-
 var tmpDir = 'tmp-osm-tag-stats/';
 var cleanArguments = require('./util/cleanArguments')(argv, tmpDir);
 
 var count = cleanArguments.argv.count,
-    geojson = cleanArguments.argv.geojson,
     users = cleanArguments.argv.users,
     dates = cleanArguments.argv.dates,
     mbtilesPath = cleanArguments.argv.mbtiles,
-    tmpGeojson = cleanArguments.tmpGeojson,
     tagFilter = cleanArguments.argv.filter,
     osmID = new Set(),
-    removeProperties = cleanArguments.argv.removeProperties,
-    tmpFd;
+    removeProperties = cleanArguments.argv.removeProperties;
 
 if (!mbtilesPath || argv.help) {
     help();
@@ -35,7 +29,6 @@ tileReduce({
     sources: [{name: 'osm', mbtiles: mbtilesPath}],
     mapOptions: {
         'count': count,
-        'tmpGeojson': tmpGeojson,
         'dates': dates,
         'users': users,
         'tagFilter': tagFilter,
@@ -43,9 +36,6 @@ tileReduce({
     }
 })
 .on('start', function () {
-    if (tmpGeojson) {
-        tmpFd = fs.openSync(tmpGeojson, 'w');
-    }
 })
 .on('reduce', function (id) {
 })

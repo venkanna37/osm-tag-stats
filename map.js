@@ -30,7 +30,7 @@ module.exports = function (data, tile, writeData, done) {
     if (result.length > 0) {
         var fc = featureCollection(result);
         fc.features.forEach(function (feature) {
-            writeData(JSON.stringify(feature));
+            writeData(JSON.stringify(feature) + '\n');
         });
     }
     done(null, null);
